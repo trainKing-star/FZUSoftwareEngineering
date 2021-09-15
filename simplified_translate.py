@@ -1,6 +1,4 @@
-from trie_node_model import *
 from words_search import IndexSearch
-
 import threading
 
 

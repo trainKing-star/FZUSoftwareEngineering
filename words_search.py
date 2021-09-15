@@ -1,4 +1,4 @@
-from TrieNodeModel import *
+from trie_node_model import *
 
 # 能返回索引信息的搜索类
 class IndexSearch:

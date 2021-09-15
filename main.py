@@ -1,16 +1,13 @@
 from words_search import IndexSearch
-from translate import Translate
+from data_preprocess import *
 
 if __name__ == "__main__":
     s = "法轮功|flg|法lun功"
     test = "法轮功是一种邪教组织，简称flg，抵制法lun功"
 
+    s = expand_keywords(s.split("|"))
+    new_test, origin_index = characters_preprocess(test)
     search = IndexSearch()
-    translate = Translate()
-
-    test = translate.ToSimplifiedChinese(test)
-    s = translate.ToSimplifiedChinese(s)
-
-    search.SetKeywords(s.split('|'))
-    print("搜索信息：", search.FindAll(test))
-    print("关键词替换：", search.Replace(test))
+    search.SetKeywords(s)
+    message_list = search.FindAll(new_test)
+    search_message_from_origin_text(test, message_list, origin_index)
