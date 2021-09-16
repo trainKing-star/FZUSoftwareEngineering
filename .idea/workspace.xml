@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c82b273c-0b71-434e-9ffe-900b0c2f794f" name="默认更改列表" comment="默认更改列表">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_preprocess.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_preprocess.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +76,7 @@
       <recent name="D:\project\python\FZUSoftwareEngineering" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_exception.TestExceptions.test_file_exist">
+  <component name="RunManager" selected="Python.main">
     <configuration name="data_preprocess" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="FZUSoftwareEngineering" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -178,11 +179,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.data_preprocess" />
         <item itemvalue="Python tests.pytest for test_exception.TestExceptions.test_file_exist" />
         <item itemvalue="Python tests.pytest in test" />
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.test_data_preprocess" />
-        <item itemvalue="Python.data_preprocess" />
       </list>
     </recent_temporary>
   </component>
@@ -203,7 +204,7 @@
       <workItem from="1631751346801" duration="17528000" />
       <workItem from="1631769079868" duration="14149000" />
       <workItem from="1631783522103" duration="20000" />
-      <workItem from="1631786974046" duration="2425000" />
+      <workItem from="1631786974046" duration="10371000" />
     </task>
     <servers />
   </component>
@@ -224,9 +225,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/FZUSoftwareEngineering$pytest_for_test_exception_TestExceptions_test_file_exist.coverage" NAME="pytest for test_exception.TestExceptions.test_file_exist Coverage Results" MODIFIED="1631782395573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
-    <SUITE FILE_PATH="coverage/FZUSoftwareEngineering$main.coverage" NAME="main Coverage Results" MODIFIED="1631778577084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/FZUSoftwareEngineering$pytest_in_test.coverage" NAME="pytest in test Coverage Results" MODIFIED="1631779528256" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
-    <SUITE FILE_PATH="coverage/FZUSoftwareEngineering$data_preprocess.coverage" NAME="data_preprocess Coverage Results" MODIFIED="1631777122505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FZUSoftwareEngineering$main.coverage" NAME="main Coverage Results" MODIFIED="1631797859810" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FZUSoftwareEngineering$data_preprocess.coverage" NAME="data_preprocess Coverage Results" MODIFIED="1631797841600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/FZUSoftwareEngineering$a.coverage" NAME="a Coverage Results" MODIFIED="1631770445074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/FZUSoftwareEngineering$test_data_preprocess.coverage" NAME="test_data_preprocess Coverage Results" MODIFIED="1631777317163" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/FZUSoftwareEngineering$pin_yin_translate.coverage" NAME="pin_yin_translate Coverage Results" MODIFIED="1631761384969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
