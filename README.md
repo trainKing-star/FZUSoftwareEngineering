@@ -1,25 +1,23 @@
-https://github.com/trainKing-star/FZUSoftwareEngineering
-
+[https://github.com/trainKing-star/FZUSoftwareEngineering](https://github.com/trainKing-star/FZUSoftwareEngineering)
 # 一、PSP表格
-
-| **PSP2.1**                              | **Personal Software Process Stages**    | **预估耗时（分钟）** | **实际耗时（分钟）** |
-| --------------------------------------- | --------------------------------------- | -------------------- | -------------------- |
-| Planning                                | 计划                                    | 10                   | 10                   |
-| · Estimate                              | · 估计这个任务需要多少时间              | 10                   | 10                   |
-| Development                             | 开发                                    | 1180                 | 945                  |
-| · Analysis                              | · 需求分析 (包括学习新技术)             | 360                  | 200                  |
-| · Design Spec                           | · 生成设计文档                          | 20                   | 30                   |
-| · Design Review                         | · 设计复审                              | 10                   | 10                   |
-| · Coding Standard                       | · 代码规范 (为目前的开发制定合适的规范) | 10                   | 15                   |
-| · Design                                | · 具体设计                              | 60                   | 70                   |
-| · Coding                                | · 具体编码                              | 600                  | 500                  |
-| · Code Review                           | · 代码复审                              | 60                   | 70                   |
-| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 60                   | 50                   |
-| Reporting                               | 报告                                    | 100                  | 120                  |
-| · Test Repor                            | · 测试报告                              | 60                   | 80                   |
-| · Size Measurement                      | · 计算工作量                            | 10                   | 10                   |
-| · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          | 30                   | 30                   |
-|                                         | · 合计                                  | 1290                 | 1075                 |
+| **PSP2.1**                              | **Personal Software Process Stages**    | **预估耗时（分钟）** | **实际耗时（分钟）** |  
+| --------------------------------------- | --------------------------------------- | -------------------- | -------------------- | 
+| Planning                                | 计划                                    | 10                   | 10                   |   
+| · Estimate                              | · 估计这个任务需要多少时间              | 10                   | 10                   |             
+| Development                             | 开发                                    | 1180                 | 945                  |   
+| · Analysis                              | · 需求分析 (包括学习新技术)             | 360                  | 200                  |            
+| · Design Spec                           | · 生成设计文档                          | 20                   | 30                   |       
+| · Design Review                         | · 设计复审                              | 10                   | 10                   |     
+| · Coding Standard                       | · 代码规范 (为目前的开发制定合适的规范) | 10                   | 15                   |                  
+| · Design                                | · 具体设计                              | 60                   | 70                   |     
+| · Coding                                | · 具体编码                              | 600                  | 500                  |     
+| · Code Review                           | · 代码复审                              | 60                   | 70                   |     
+| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 60                   | 50                   |                   
+| Reporting                               | 报告                                    | 100                  | 120                  |   
+| · Test Repor                            | · 测试报告                              | 60                   | 80                   |     
+| · Size Measurement                      | · 计算工作量                            | 10                   | 10                   |      
+| · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          | 30                   | 30                   |              
+|                                         | · 合计                                  | 1290                 | 1075                 |   
 
 # 二、计算模块接口
 
@@ -54,38 +52,44 @@ https://github.com/trainKing-star/FZUSoftwareEngineering
   - test_pinyin.py——测试汉字拼音转换模块
   - test_exception.py——测试自定义异常处理模块
   - test_data_preprocess.py——测试数据预处理以及主执行模型
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222330045-1798754564.png)
 
-![image-20210916190110964](README.assets/image-20210916190110964.png)
+最后项目的完成结果
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916223726731-962092289.png)
+
 
 ### （1）words_search.py——广搜算法实现模块
 
 words_search.py是整个项目的核心模块，每一个模块都会用到这个模块的IndexSearch搜索类，这个类中搜索算法是使用的广搜算法
 
-![image-20210916193836047](README.assets/image-20210916193836047.png)
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222357112-1456969089.png)
+
 
 ### （2）simplified_translate.py——繁简体字转换模块
 
 simplified_translate.py模块中的Translate类，对外提供的函数是ToSimplifiedChinese()，内部通过__GetWordsSearch()类选择使用哪种内部资源初始化IndexSearch搜索类，再通过TransformationReplace()方法搜索简体文本并完成替换，最后由ToSimplifiedChinese()方法输出简体字文本
 
-![image-20210916200842542](README.assets/image-20210916200842542.png)
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222406227-1195102404.png)
+
 
 ### （3） pin_yin_translate.py 汉字拼音转换模块
 
 与simplified_translate.py类似，pin_yin_translate.py 结合内部资源初始化IndexSearch类，由核心方法GetPinyinList()去调用搜索拼音和替换文本，最后输出处理好的拼音文本
 
-![image-20210916200648977](README.assets/image-20210916200648977.png)
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222413327-612435547.png)
+
 
 ### （4）data_preprocess.py——数据预处理模块
 
 如图所示，expand_keywords()函数将扩充敏感词包括扩充谐音替代、拼音替代、拼音首字母代替，characters_preprocess()将进行信息过滤和信息提取，search_message_from_origin_text()将从精炼信息又扩大到原本的输入，是一种用少量信息表示大量信息的方法
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222422856-2138597978.png)
 
-​    ![image-20210916202754707](README.assets/image-20210916202754707.png)
 
 ### （5） main.py——主执行模块
 
  main.py主执行模块中的data_load_process()函数整合之前的内容对数据进行处理后，按照指定的格式将数据输出到答案文件
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222430088-192439125.png)
 
-![image-20210916204305545](README.assets/image-20210916204305545.png)
 
 ### （6）总结
 
@@ -111,9 +115,11 @@ simplified_translate.py模块中的Translate类，对外提供的函数是ToSimp
 - 对数据的加工会花费较大的时间，如扩充关键词、中英文分别处理
 - 建立节点树和广搜树，进行繁简体转化、汉字拼音转化等用的时间占比很少
 
-![image-20210916190558226](README.assets/image-20210916190558226.png)
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222447042-359978767.png)
 
-![FZUSoftwareEngineering4](README.assets/FZUSoftwareEngineering4.png)
+
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222455150-1323291138.png)
+
 
 ### （2）优化方案
 
@@ -129,7 +135,8 @@ simplified_translate.py模块中的Translate类，对外提供的函数是ToSimp
 
 项目中设置了一个单元测试包test，里面有五个单元测试模块
 
-![image-20210916212232145](README.assets/image-20210916212232145.png)
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222458622-837262424.png)
+
 
 ### （1）test_simplified.py
 
@@ -346,15 +353,16 @@ compare_file = "test/compare.txt"
 - 模块中已经记录静态资源即使调用很多次处理文本仍然覆盖率很低
 - 模块中没有记录静态资源覆盖率很高
 
-![image-20210916213915010](README.assets/image-20210916213915010.png)
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222516643-1420287783.png)
+
 
 下图为simplified_translate.py繁简体转化模块中的部分静态资源
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222524164-1504483973.png)
 
-![image-20210916214323739](README.assets/image-20210916214323739.png)
 
 下图为pin_yin_translate.py汉字拼音模块中的部分静态资源
+![](https://img2020.cnblogs.com/blog/1925825/202109/1925825-20210916222529788-1125230563.png)
 
-![image-20210916214437656](README.assets/image-20210916214437656.png)
 
 结果分析：
 
@@ -366,7 +374,7 @@ compare_file = "test/compare.txt"
 
 项目中需要获取三个由用户的输入文件路径，用户的输入路径可能在其电脑上不存在或者不是文件的路径，因此需要一个自定义文件异常类让程序能够正常运行
 
-### （2）自定义异常处理代码实现’
+### （2）自定义异常处理代码实现
 
 在项目中exceptions.py模块中定义一个简单的文件异常类，其作用是能被抛出和捕获，在被捕获后能使程序正常运行并给用户异常信息提示
 
@@ -439,3 +447,7 @@ class TestExceptions:
 本次项目是我在极短时间内肝出来的，算法思路借鉴了一个github上的ToolGood.Words项目，他虽然提供了一些开源的代码但没有给算法的注释和讲解，要花30块买，我可太不像花这个钱了于是自己花了一些时间读懂他的源码，索性不难是个广搜算法，然后基于他的项目我写了很多的数据加工和数据处理的代码将其能应用到我们的作业上，满足需求，不过还是太赶了，原本我是想试试能不能切换成其他算法对比。
 
 本次作业我也学到了很多我以前没有用过的东西，比如性能分析、单元检测，以前 只管敲代码，敲完了一个项目也就结束了，后续也不会优化这个项目，希望我在之后的课程里能学到更多的东西，然后做好我的软工实践，我可就是为了和小伙伴们做出一个能上线有趣的项目才来这里的，要不然我绝不在这里受苦，现在是22:06分，终于肝完了，还有一些想写的，先交了以后再改。
+
+写完了提交了还有一点点的时间，本来看到这个题目的时候我就想到现在手上的一个项目应该会有敏感词检测，敏感词检测我想也能用深度学习、NLP来做，这个我老感兴趣了，还想着做完一个基本的就试试用深度学习来做，之前是有一个想法不知道能不能实现，敏感词检测问题有点类似NLP里的命名实体识别和中文分词的问题，我想到的是通过序列标注的方法对训练文本中的每一个敏感字进行标注，具体方法可以采用中文分词BIO标注法，B是敏感词的开头，I是敏感词的中间部分词，O是敏感词的结束词。按照这样的方法进行训练，我觉得可行，有空试试，这次做算法上的敏感词识别可真让我体会到深度学习的优势，不用管那么多数据标注好全扔进去，效果还比手写的算法好，太舒坦了！
+
+本次项目也给我了一些挑战，短时间内看懂别人的代码手敲一堆自己实现的数据加工和处理以及想一些适配问题的解决方法，就是我已经搁置了几天的英语单词还没有背，快乐又痛苦，这次项目好好保存后面大概会有用到。
