@@ -1,6 +1,5 @@
-
 # 树节点类
-class TrieNode():
+class TrieNode:
     def __init__(self):
         # 节点索引
         self.Index = 0
@@ -39,13 +38,14 @@ class TrieNode():
 
     def SetResults(self, index):
         # 标识叶节点
-        if (self.End == False):
+        if self.End is False:
             self.End = True
         # 设置一条路径对应的关键词索引
         self.Results.append(index)
 
+
 # 广搜节点类
-class TrieNode2():
+class TrieNode2:
     def __init__(self):
         # 关键词结束标识
         self.End = False
@@ -61,28 +61,29 @@ class TrieNode2():
     # 插入节点函数
     def Add(self, c, node3):
         # 在插入过程中记录下插入节点十进制整数的最大最小值
-        if (self.minflag > c):
+        if self.minflag > c:
             self.minflag = c
-        if (self.maxflag < c):
+        if self.maxflag < c:
             self.maxflag = c
         # 加入到本节点的子节点列表中
         self.m_values[c] = node3
 
     # 标识叶节点
     def SetResults(self, index):
-        if (self.End == False):
+        if self.End is False:
             self.End = True
         # 设置一条路径对应的关键词索引
-        if (index in self.Results) == False:
+        if not (index in self.Results):
             self.Results.append(index)
 
     # 判断子节点中有无该键值
     def HasKey(self, c):
         return c in self.m_values
+
     # 尝试获取到输入字符对应的子孙节点
     def TryGetValue(self, c):
         # 判断c是否在该节点的子孙节点值范围中
-        if (self.minflag <= c and self.maxflag >= c):
+        if self.minflag <= c <= self.maxflag:
             if c in self.m_values:
                 # 如果存在就返回该子孙节点
                 return self.m_values[c]

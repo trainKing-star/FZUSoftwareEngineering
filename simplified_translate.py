@@ -2,7 +2,7 @@ from words_search import IndexSearch
 import threading
 
 
-class Translate():
+class Translate:
     def __init__(self):
         self.lock = threading.RLock()
         self._s2t_s = ["㐷", "㐹", "㐽", "㑇", "㑈", "㑔", "㑩", "㓆", "㓥", "㓰", "㔉", "㖊", "㖞", "㗷", "㘎", "㚯", "㛀", "㛟", "㛠",
@@ -2074,10 +2074,10 @@ class Translate():
     # srcType 0: 1:港澳繁体转简体, 2:台湾正体转简体
     def ToSimplifiedChinese(self, text, srcType=0):
         # 超出类型则抛出错误
-        if (srcType > 2 or srcType < 0):
+        if srcType > 2 or srcType < 0:
             raise Exception("srcType 不支持该类型")
 
-        if (srcType > 0):
+        if srcType > 0:
             # 获取搜索类实例
             t2 = self.__GetWordsSearch(False, srcType)
             # 输入文本中繁体字替换成简体字
@@ -2141,7 +2141,7 @@ class Translate():
                 # 上锁
                 self.lock.acquire()
                 try:
-                    if (self.hk2tSearch == None):
+                    if self.hk2tSearch == None:
                         # 获取搜索表
                         self.hk2tSearch = self.__BuildWordsSearch(self._t2hk_hk, self._t2hk_t)
                 finally:

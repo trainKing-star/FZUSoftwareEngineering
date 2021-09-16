@@ -9,8 +9,6 @@ translate = Translate()
 # 加载拼音转换实例
 pinyin = Pinyin()
 
-
-
 '''
  从原输入文本中搜索查找到的敏感词信息
  
@@ -21,6 +19,8 @@ pinyin = Pinyin()
  :param keywords_target:扩充后的关键词对应原输入关键词的字典
  :return target_message:保存搜索的文本对应的关键词
 '''
+
+
 def search_message_from_origin_text(origin_text, new_text, message_list, origin_index, keywords_target):
     # 保存搜索的文本对应的关键词
     target_message = []
@@ -48,7 +48,7 @@ def search_message_from_origin_text(origin_text, new_text, message_list, origin_
         # 根据索引获取原文本
         target_word = origin_text[start:end]
         # 根据搜索到的文本是英文还是中文，返回不同的结果
-        target_word = judge_Chinese_English(target_word, new_word)
+        target_word = judge_chinese_english(target_word, new_word)
         # 筛选后没有信息则跳过此次循环
         if target_word is None:
             continue
@@ -57,15 +57,18 @@ def search_message_from_origin_text(origin_text, new_text, message_list, origin_
     # 返回对应信息
     return target_message
 
+
 '''
  根据搜索的文本段是英文还是中文返回不同的信息
  
  :param origin_text:原输入文本搜索后切割出来的文本
  :param target_text:处理后文本搜索后切割出来的文本
 '''
-def judge_Chinese_English(origin_text, target_text):
+
+
+def judge_chinese_english(origin_text, target_text):
     judge = enchant.Dict("en_US")
-    if (judge.check(target_text) is False):
+    if judge.check(target_text) is False:
         # 是中文，就判断文本段里是否有数字
         flag = re.search(r'[0-9]', origin_text)
         if flag is None:
@@ -88,6 +91,8 @@ def judge_Chinese_English(origin_text, target_text):
  :return new_text:新文本列表
  :return new_text_index:对应原输入文本的索引列表
 '''
+
+
 def characters_preprocess(text, keywords):
     # new_text:处理后将要返回的新输入文本列表
     # new_text_index：处理后新输入文本对应原输入文本的索引列表
@@ -116,6 +121,7 @@ def characters_preprocess(text, keywords):
     # 返回新文本列表和对应原输入文本的索引列表
     return new_text, new_text_index
 
+
 '''
  扩充敏感词
  包括扩充谐音替代、拼音替代、拼音首字母代替
@@ -124,6 +130,8 @@ def characters_preprocess(text, keywords):
  :return new_keywords:扩充后的关键词列表
  :return new_keywords_target:扩充后的关键词对应原输入关键词的字典
 '''
+
+
 def expand_keywords(keywords):
     # 关键词转换成简体与输入文本处理统一成简体
     keywords = translate.ToSimplifiedChinese("|".join(keywords)).split("|")

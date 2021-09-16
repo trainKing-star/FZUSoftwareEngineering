@@ -1,5 +1,6 @@
 from trie_node_model import *
 
+
 # 能返回索引信息的搜索类
 class IndexSearch:
     def __init__(self):
@@ -135,6 +136,7 @@ class IndexSearch:
                 oldNode = oldNode.Failure
         # 设置成头节点
         self._first = allNode2[0]
+
     # 发现输入文本中的第一个关键字
     def FindFirst(self, text):
         ptr = None
@@ -162,6 +164,7 @@ class IndexSearch:
             ptr = tn
         # 没有找到关键字就返回None
         return None
+
     # 发现输入文本中所有的关键字
     def FindAll(self, text):
         ptr = None
@@ -193,6 +196,7 @@ class IndexSearch:
             ptr = tn
         # 返回关键词列表
         return list
+
     # 判断关键词是否在文本中
     def ContainsAny(self, text):
         ptr = None
@@ -216,6 +220,7 @@ class IndexSearch:
             ptr = tn
         # 没有关键词返回False
         return False
+
     # 将文本中关键词替换
     def Replace(self, text, replaceChar='*'):
         result = list(text)
@@ -245,6 +250,7 @@ class IndexSearch:
             ptr = tn
         # 返回替换结果
         return ''.join(result)
+
 
 # 直接返回列表的搜索类
 class DirectSearch():
@@ -460,18 +466,18 @@ class DirectSearch():
         for i in range(len(text)):  # for (i = 0; i < text.length; i++)
             # 获取到字符的十进制整数
             t = ord(text[i])  # text.charCodeAt(index)
-            if (ptr == None):
+            if ptr is None:
                 # 进行第一次广搜
                 tn = self._first.TryGetValue(t)
             else:
                 # 基于当前节点进行下一次广搜
                 tn = ptr.TryGetValue(t)
-                if (tn == None):
+                if tn is None:
                     # 没有搜索结果则返回首节点进行下一次广搜
                     tn = self._first.TryGetValue(t)
 
-            if (tn != None):
-                if (tn.End):
+            if tn is not None:
+                if tn.End:
                     # 获取替换长度
                     maxLength = len(self._keywords[tn.Results[0]])
                     start = i + 1 - maxLength
