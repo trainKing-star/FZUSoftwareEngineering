@@ -15,14 +15,22 @@ import os
 
 
 def data_load_process(keyword_file, input_file, output_file):
+
     try:
+        # 检测关键词文件路径是否存在，是否是文件路径
         if not os.path.exists(keyword_file) or not os.path.isfile(keyword_file):
+            # 不是则抛出异常
             raise FileProcessException("输入的关键词路径不存在或不是文件 {}".format(keyword_file))
+        # 检测待检测文件路径是否存在，是否是文件路径
         elif not os.path.exists(input_file) or not os.path.isfile(input_file):
+            # 不是则抛出异常
             raise FileProcessException("输入的待检测路径不存在或不是文件 {}".format(input_file))
+        # 检测答案文件父路径是否存在
         elif not os.path.exists(os.path.dirname(output_file)):
+            # 不是则抛出异常
             raise FileProcessException("输入的答案路径不存在 {}".format(output_file))
     except FileProcessException as e:
+        # 捕获异常后，显示信息，正常停止程序
         print(e.message)
         return
 

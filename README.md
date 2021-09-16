@@ -100,7 +100,342 @@ simplified_translate.py模块中的Translate类，对外提供的函数是ToSimp
 - **问题**：**英文**文本**不区分大小写**，在敏感词中插入若干**空格**、**数字**等**其他符号**(换行、字母除外)，也属于敏感词
 - **解决方法**：输入文本预处理全部字母转为小写，精简输入文本后，借助第三方包判断搜索出敏感词的文本对应的敏感词是不是英文，进行中英文分别处理。例如：判断是中文则允许字符间有数字，判断为英文则不允许字符间有数字
 
+## 2. 计算模块接口部分的性能改进
+
+### （1）性能分析
+
+执行主执行文件代码后的消耗时间状况如图，根据下面两张图可以分析得到
+
+- 大量的时间集中在search_message_from_origin_text()和judge_chinese_english()上
+- 根据pycharm的调用关系图可以发现对搜索结束后的信息进行加工处理会花费更多的时间
+- 对数据的加工会花费较大的时间，如扩充关键词、中英文分别处理
+- 建立节点树和广搜树，进行繁简体转化、汉字拼音转化等用的时间占比很少
+
 ![image-20210916190558226](README.assets/image-20210916190558226.png)
 
 ![FZUSoftwareEngineering4](README.assets/FZUSoftwareEngineering4.png)
 
+### （2）优化方案
+
+根据性能分析，得到了两个性能优化的方案
+
+- 更改核心搜索算法，采用其他更高效率的算法
+- 修改核心搜索算法，原算法对例如：敏感词min和ming，输入文本ming。会输出两个敏感词min和ming，但我们只需要更大范围的ming。我没有修改原算法，而是通过对原算法的加工处理修正了结果，这降低了效率。因此修改核心算法可以提高效率
+- 考虑使用多线程方式处理数据
+
+## 3. 计算模块部分单元测试展示
+
+项目中采用了pytest第三方包作为单元测试，pytest可以检测项目包下的test为首的文件并自动执行test为首的函数或者Test为首的类
+
+项目中设置了一个单元测试包test，里面有五个单元测试模块
+
+![image-20210916212232145](README.assets/image-20210916212232145.png)
+
+### （1）test_simplified.py
+
+test_simplified.py模块针对simplified_translate.py模块中Translate类的核心方法ToSimplifiedChinese()进行测试，测试代码如下
+
+```python
+# 输入文本
+origin_text = "福州大學，拼音稱呼fuzhou大學，首字母簡稱fz大學，全簡稱FZDX。" \
+              "zhd現在正在做的這個項目是爲了在fz大學的軟件工程課上更happy的學習！"
+# 测试标准结果
+target_text = "福州大学，拼音称呼fuzhou大学，首字母简称fz大学，全简称FZDX。" \
+              "zhd现在正在做的这个项目是为了在fz大学的软件工程课上更happy的学习！"
+
+
+class TestSimplified:
+
+    def test_Simplified(self):
+        global origin_text
+        global target_text
+        print("测试全局搜索")
+        translate = Translate()
+        text = translate.ToSimplifiedChinese(origin_text)
+        assert text == target_text
+        print("全局搜索正常")
+```
+
+### （2）  test_search.py
+
+test_search.py模块针对words_search.py模块中的IndexSearch类所有方法进行测试
+
+```python
+test_search = IndexSearch()
+# 输入测试关键词案例
+test_keyword = ["福州大学", "软件工程", "FZDX", "zhd", "happy", "fz大学", "fuzhou大学"]
+# 输入测试文本
+test_text = "福州大学，拼音称呼fuzhou大学，首字母简称fz大学，全简称FZDX。" \
+            "zhd现在正在做的这个项目是为了在fz大学的软件工程课上更happy的学习！"
+
+class TestSearch:
+
+    def test_set_keyword(self):
+        global test_search
+        global test_keyword
+        print("测试初始化搜索类")
+        test_search.SetKeywords(test_keyword)
+        print("初始化搜索类正常")
+
+    def test_find_all(self):
+        global test_search
+        global test_text
+        print("测试全局搜索")
+        all = test_search.FindAll(test_text)
+        assert all[0]["Keyword"] == "福州大学"
+        assert all[1]["Keyword"] == "fuzhou大学"
+        assert all[2]["Keyword"] == "fz大学"
+        assert all[3]["Keyword"] == "FZDX"
+        assert all[4]["Keyword"] == "zhd"
+        assert all[5]["Keyword"] == "fz大学"
+        assert all[6]["Keyword"] == "软件工程"
+        assert all[7]["Keyword"] == "happy"
+        assert len(all) == 8
+        print("全局搜索正常")
+```
+
+### （3）test_pinyin.py
+
+test_pinyin.py模块针对pin_yin_translate.py模块中的Pinyin类的GetPinyin()方法进行测试，这个方法包含了Pingyin类的核心方法并对核心方法输出的结果进行拼接字符串处理
+
+```python
+# 输入测试文本
+origin_text = "福州大学，拼音称呼fuzhou大学，首字母简称fz大学，全简称FZDX。" \
+              "zhd现在正在做的这个项目是为了在fz大学的软件工程课上更happy的学习！"
+# 输入测试标准文本
+target_text = "FuZhouDaXue，PinYinChengHufuzhouDaXue，ShouZiMuJianChengfzDaXue，QuanJianChengFZDX。" \
+              "zhdXianZaiZhengZaiZuoDiZheGeXiangMuShiWeiLeZaifzDaXueDiRuanJianGongChengKeShangGenghappyDiXueXi！"
+
+
+class TestPinyin:
+
+    def test_pinyin(self):
+        global origin_text
+        global target_text
+        print("测试拼音替换")
+        pinyin = Pinyin()
+        text = pinyin.GetPinyin(origin_text)
+        assert text == target_text
+        print("拼音替换正常")
+```
+
+### （4）test_exception.py
+
+test_exception.py模块针对exceptions.py模块中的所有自定义异常处理类进行测试，目前只有一个自定义的文件异常处理类
+
+```python
+class TestExceptions:
+
+    def test_file_exist(self):
+        # 测试目录
+        test_path = ["E:/1", "E:/2", "E:/3"]
+        print("开始测试文件异常类")
+        try:
+            # 目录不存在或不是文件则抛出错误
+            for path in test_path:
+                if not os.path.exists(path) or not os.path.isfile(path):
+                    raise FileProcessException("输入的关键词路径不存在或不是文件")
+                elif not os.path.exists(path) or not os.path.isfile(path):
+                    raise FileProcessException("输入的待检测路径不存在或不是文件")
+            raise BaseException
+        except FileProcessException as e:
+            print(e.message)
+            print("测试文件异常类正常")
+```
+
+### （5） test_data_preprocess.py
+
+test_data_preprocess.py模块针对data_preprocess.py和main.py模块中的所有方法进行了测试，对main.py模块核心方法data_load_process()让其读入测试关键词文件、测试待检测文件、测试答案文件进行100行文本的答案测试，测试其输入输出以及结果正确功能
+
+```python
+class TestDataPreprocess:
+
+    def test_expand_keywords(self):
+        global keywords
+        global keywords_expand_results
+        print("开始测试扩展敏感词")
+        for index, keyword in enumerate(keywords):
+            test_keywords, test_expand_results = expand_keywords([keyword])
+            for test_k in test_keywords:
+                assert test_k in keywords_expand_results[index][0]
+            for test_k, test_v in test_expand_results.items():
+                assert test_expand_results[test_k] == keywords_expand_results[index][1][test_k]
+        print("扩展敏感词正常")
+
+    def test_characters_preprocess(self):
+        global keywords
+        global char_text
+        global char_text_result_1
+        global char_text_result_2
+        print("开始测试输入文本预处理")
+        test_text, test_index = characters_preprocess(char_text, keywords)
+        test_text = "".join(test_text)
+        assert test_text == char_text_result_1
+        assert test_index == char_text_result_2
+
+    def test_judge_c_z(self):
+        global judge_test
+        print("开始测试中英文区分判断")
+        for i in range(len(judge_test)):
+            assert judge_test[i][2] == judge_chinese_english(judge_test[i][0], judge_test[i][1])
+        print("测试中英文区分判断正常")
+
+    def test_data_load_process(self):
+        global keywords_file
+        global input_file
+        global output_file
+        global compare_file
+        print("开始测试主程序运行")
+        data_load_process(keywords_file, input_file, output_file)
+        with open(output_file, "r", encoding="utf8") as f:
+            output_list = f.read().splitlines()
+        with open(compare_file, "r", encoding="utf8") as f:
+            compare_list = f.read().splitlines()
+        for i in range(len(output_list)):
+            assert output_list[i] == compare_list[i]
+        print("测试主程序运行正常")
+
+
+
+keywords = ["福州大学", "happy"]
+keywords_expand_results = [
+(['fuzhoudxue', 'fuzhoudaxue', 'fuzhou大xue', '福州大学', '福州dx', 'fzhoudxue', 'fu州大学',
+  'fuzdxue', 'fzhoudaxue', 'fuzhouda学', '福zhou大学', '福zhou大xue', 'fu州da学', '福州da学',
+  'fzd学', '福州daxue', 'f州dx', 'fu州大xue', '福zdx', 'fuzhoudx', 'fzdx', 'fuzdax', 'fzhoudax',
+  '福zd学', 'fzdax', '福zhoudaxue', 'fuzhou大学', 'fzdxue', 'fzhoudx', 'fu州daxue', 'f州大x', 'fz大学',
+  'fuzdx', 'fuzhoudax', 'f州d学', 'fz大x', '福州大x', 'f州大学', '福z大x', '福zhouda学', '福州d学', '福州大xue',
+  'fzdaxue', '福z大学', 'fuzdaxue'],
+ {'福州大学': '福州大学', 'fu州大学': '福州大学', 'f州大学': '福州大学', 'fzhoudaxue': '福州大学', '福zhou大学': '福州大学',
+  '福z大学': '福州大学', 'fuzdaxue': '福州大学', '福州da学': '福州大学', '福州d学': '福州大学', 'fuzhoudxue': '福州大学',
+  '福州大xue': '福州大学', '福州大x': '福州大学', 'fuzhoudax': '福州大学', 'fuzhou大学': '福州大学', 'fz大学': '福州大学',
+  'fzdaxue': '福州大学', 'fu州da学': '福州大学', 'f州d学': '福州大学', 'fzhoudxue': '福州大学', 'fu州大xue': '福州大学',
+  'f州大x': '福州大学', 'fzhoudax': '福州大学', '福zhouda学': '福州大学', '福zd学': '福州大学', 'fuzdxue': '福州大学',
+  '福zhou大xue': '福州大学', '福z大x': '福州大学', 'fuzdax': '福州大学', '福州daxue': '福州大学', '福州dx': '福州大学',
+  'fuzhoudx': '福州大学', 'fuzhouda学': '福州大学', 'fzd学': '福州大学', 'fzdxue': '福州大学', 'fuzhou大xue': '福州大学',
+  'fz大x': '福州大学', 'fzdax': '福州大学', 'fu州daxue': '福州大学', 'f州dx': '福州大学', 'fzhoudx': '福州大学',
+  '福zhoudaxue': '福州大学', '福zdx': '福州大学', 'fuzdx': '福州大学', 'fuzhoudaxue': '福州大学', 'fzdx': '福州大学'}),
+(['happy'], {'happy': 'happy'})
+]
+
+char_text = "抚州大学，富洲大雪，辅轴搭薛，拼音称呼fuzhou大学，首字母简称fz大学，全简称FZDX。" \
+            "zhd现在正在做的这个项目是为了在fz大学的软件工程课上更happy的学习！"
+char_text_result_1 = "福州大学福州大学福州大学拼音称呼fuzhou大学首字母简称fz大学全简称fzdx" \
+                   "zhd现在正在做的这个项目是为了在fz大学的软件工程课上更happy的学习"
+char_text_result_2 = [0, 1, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+                      24, 25, 26, 28, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 46,
+                      47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66,
+                      67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82]
+
+judge_test = [
+    ("ha132468492^$^%%&%&ap48548&^%py", "happy", "ha132468492^$^%%&%&ap48548&^%py"),
+    ("福5465州456%……&大……%%￥……学", "福州大学", None),
+    ("￥%……#@￥福%…………&州%…………大%……#@#￥&&*学", "福州大学", "￥%……#@￥福%…………&州%…………大%……#@#￥&&*学")
+]
+
+keywords_file = "test/words.txt"
+input_file = "test/org.txt"
+output_file = "test/ans.txt"
+compare_file = "test/compare.txt"
+```
+
+### （6）测试覆盖率及其原因分析
+
+下图为pycharm结合pytest第三方包的测试覆盖率图，可以看出
+
+- 大部分文件的测试覆盖率都很高
+- 模块中已经记录静态资源即使调用很多次处理文本仍然覆盖率很低
+- 模块中没有记录静态资源覆盖率很高
+
+![image-20210916213915010](README.assets/image-20210916213915010.png)
+
+下图为simplified_translate.py繁简体转化模块中的部分静态资源
+
+![image-20210916214323739](README.assets/image-20210916214323739.png)
+
+下图为pin_yin_translate.py汉字拼音模块中的部分静态资源
+
+![image-20210916214437656](README.assets/image-20210916214437656.png)
+
+结果分析：
+
+- 测试中输入文本的量不够大，上述两个模块中静态资源的量太过庞大，导致覆盖率极低
+
+## 4. 计算模块部分异常处理说明
+
+### （1）自定义异常处理需求分析
+
+项目中需要获取三个由用户的输入文件路径，用户的输入路径可能在其电脑上不存在或者不是文件的路径，因此需要一个自定义文件异常类让程序能够正常运行
+
+### （2）自定义异常处理代码实现’
+
+在项目中exceptions.py模块中定义一个简单的文件异常类，其作用是能被抛出和捕获，在被捕获后能使程序正常运行并给用户异常信息提示
+
+```python
+# 文件异常类
+class FileProcessException(BaseException):
+    # 初始化信息
+    def __init__(self, message):
+        # 公有属性，能被外部访问
+        self.message = "[异常]:" + message
+    # 抛出时能显示异常原因
+    def __str__(self):
+        return self.message
+```
+
+### （3）应用场景
+
+这个文件异常类使用在main.py模型的核心函数中，用与检测输入文件路径是否存在，是否是文件路径，以下是main.py核心方法data_load_process()的部分代码，针对答案文件路径，因为我所使用的python当不存在文件时可以自动创建文件写入，所以我只设置了验证输入答案路径的父路径是不是存在
+
+```python
+def data_load_process(keyword_file, input_file, output_file):
+    
+    try:
+        # 检测关键词文件路径是否存在，是否是文件路径
+        if not os.path.exists(keyword_file) or not os.path.isfile(keyword_file):
+            # 不是则抛出异常
+            raise FileProcessException("输入的关键词路径不存在或不是文件 {}".format(keyword_file))
+        # 检测待检测文件路径是否存在，是否是文件路径
+        elif not os.path.exists(input_file) or not os.path.isfile(input_file):
+            # 不是则抛出异常
+            raise FileProcessException("输入的待检测路径不存在或不是文件 {}".format(input_file))
+        # 检测答案文件父路径是否存在
+        elif not os.path.exists(os.path.dirname(output_file)):
+            # 不是则抛出异常
+            raise FileProcessException("输入的答案路径不存在 {}".format(output_file))
+    except FileProcessException as e:
+        # 捕获异常后，显示信息，正常停止程序
+        print(e.message)
+        return
+```
+
+### （4）自定义异常的单元检测
+
+下列代是我对该自定义异常类的单元检测，设置了两个不存在的路径，一个不是文件路径进行自定义异常检测
+
+```python
+class TestExceptions:
+
+    def test_file_exist(self):
+        # 测试目录
+        test_path = ["E:/1", "E:/2", "E:/3"]
+        print("开始测试文件异常类")
+        try:
+            # 目录不存在或不是文件则抛出错误
+            for path in test_path:
+                if not os.path.exists(path) or not os.path.isfile(path):
+                    raise FileProcessException("输入的关键词路径不存在或不是文件")
+                elif not os.path.exists(path) or not os.path.isfile(path):
+                    raise FileProcessException("输入的待检测路径不存在或不是文件")
+            raise BaseException
+        except FileProcessException as e:
+            print(e.message)
+            print("测试文件异常类正常")
+```
+
+# 三、心得
+
+因为之前有其他事情一直都比较忙，正好上周的博客作业我刚写了绝不会熬夜通宵到4点多，但偏偏打脸来的那么快，我刚好满足了熬夜条件，不得不熬夜，但却是不可多得的回忆，实现了一个本来觉得不能实现的小目标。
+
+本次项目是我在极短时间内肝出来的，算法思路借鉴了一个github上的ToolGood.Words项目，他虽然提供了一些开源的代码但没有给算法的注释和讲解，要花30块买，我可太不像花这个钱了于是自己花了一些时间读懂他的源码，索性不难是个广搜算法，然后基于他的项目我写了很多的数据加工和数据处理的代码将其能应用到我们的作业上，满足需求，不过还是太赶了，原本我是想试试能不能切换成其他算法对比。
+
+本次作业我也学到了很多我以前没有用过的东西，比如性能分析、单元检测，以前 只管敲代码，敲完了一个项目也就结束了，后续也不会优化这个项目，希望我在之后的课程里能学到更多的东西，然后做好我的软工实践，我可就是为了和小伙伴们做出一个能上线有趣的项目才来这里的，要不然我绝不在这里受苦，现在是22:06分，终于肝完了，还有一些想写的，先交了以后再改。

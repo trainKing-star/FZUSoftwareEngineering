@@ -1,7 +1,9 @@
 from words_search import IndexSearch
 
 test_search = IndexSearch()
+# 输入测试关键词案例
 test_keyword = ["福州大学", "软件工程", "FZDX", "zhd", "happy", "fz大学", "fuzhou大学"]
+# 输入测试文本
 test_text = "福州大学，拼音称呼fuzhou大学，首字母简称fz大学，全简称FZDX。" \
             "zhd现在正在做的这个项目是为了在fz大学的软件工程课上更happy的学习！"
 

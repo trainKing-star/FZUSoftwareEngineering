@@ -84,7 +84,7 @@ judge_test = [
     ("福5465州456%……&大……%%￥……学", "福州大学", None),
     ("￥%……#@￥福%…………&州%…………大%……#@#￥&&*学", "福州大学", "￥%……#@￥福%…………&州%…………大%……#@#￥&&*学")
 ]
-
+# 100行测试文本文件
 keywords_file = "test/words.txt"
 input_file = "test/org.txt"
 output_file = "test/ans.txt"
