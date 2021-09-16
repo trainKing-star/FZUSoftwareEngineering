@@ -196,7 +196,7 @@ class IndexSearch:
     # 判断关键词是否在文本中
     def ContainsAny(self, text):
         ptr = None
-        for index in range(len(text)):  # for (index = 0; index < text.length; index++)
+        for index in range(len(text)):
             # 获取到字符的十进制整数
             t = ord(text[index])  # text.charCodeAt(index)
             if (ptr == None):
@@ -422,7 +422,6 @@ class DirectSearch():
                 if (tn.End):
                     # 遍历得到该搜索路径下的所有关键词
                     for j in range(len(tn.Results)):  # for (j = 0; j < tn.Results.length; j++)
-                        print(tn.Results)
                         item = tn.Results[j]
                         list.append(self._keywords[item])
             ptr = tn
