@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c82b273c-0b71-434e-9ffe-900b0c2f794f" name="默认更改列表" comment="默认更改列表">
-      <change afterPath="$PROJECT_DIR$/exceptions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/test_exception.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_data_preprocess.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_data_preprocess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,7 +201,9 @@
       <workItem from="1631717172349" duration="76000" />
       <workItem from="1631717357128" duration="5367000" />
       <workItem from="1631751346801" duration="17528000" />
-      <workItem from="1631769079868" duration="14039000" />
+      <workItem from="1631769079868" duration="14149000" />
+      <workItem from="1631783522103" duration="20000" />
+      <workItem from="1631786974046" duration="2425000" />
     </task>
     <servers />
   </component>

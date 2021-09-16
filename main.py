@@ -2,10 +2,8 @@ from words_search import IndexSearch
 from data_preprocess import *
 from exceptions import FileProcessException
 import argparse
-import psutil
 import os
 
-mem = psutil.virtual_memory()
 
 '''
  数据加载和数据处理，包括读入数据，预处理数据，写入数据
@@ -19,9 +17,11 @@ mem = psutil.virtual_memory()
 def data_load_process(keyword_file, input_file, output_file):
     try:
         if not os.path.exists(keyword_file) or not os.path.isfile(keyword_file):
-            raise FileProcessException("输入的关键词路径不存在或不是文件")
+            raise FileProcessException("输入的关键词路径不存在或不是文件 {}".format(keyword_file))
         elif not os.path.exists(input_file) or not os.path.isfile(input_file):
-            raise FileProcessException("输入的待检测路径不存在或不是文件")
+            raise FileProcessException("输入的待检测路径不存在或不是文件 {}".format(input_file))
+        elif not os.path.exists(os.path.dirname(output_file)):
+            raise FileProcessException("输入的答案路径不存在 {}".format(output_file))
     except FileProcessException as e:
         print(e.message)
         return
