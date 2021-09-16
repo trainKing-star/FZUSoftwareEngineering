@@ -1,5 +1,4 @@
 from data_preprocess import *
-from words_search import IndexSearch
 from main import data_load_process
 
 class TestDataPreprocess:
@@ -39,6 +38,7 @@ class TestDataPreprocess:
         global input_file
         global output_file
         global compare_file
+        print("开始测试主程序运行")
         data_load_process(keywords_file, input_file, output_file)
         with open(output_file, "r", encoding="utf8") as f:
             output_list = f.read().splitlines()
@@ -46,6 +46,8 @@ class TestDataPreprocess:
             compare_list = f.read().splitlines()
         for i in range(len(output_list)):
             assert output_list[i] == compare_list[i]
+        print("测试主程序运行正常")
+
 
 
 keywords = ["福州大学", "happy"]
