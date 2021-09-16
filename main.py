@@ -14,7 +14,7 @@ mem = psutil.virtual_memory()
 '''
 
 
-def data_load_process(input_file, keyword_file, output_file):
+def data_load_process(keyword_file, input_file, output_file):
     # 加载输入和关键词文件
     print("开始加载输入文本和关键词文件, 输入文本路径：{}， 关键词文件路径：{}".format(input_file, keyword_file))
     with open(keyword_file, "r", encoding="utf8") as f:
@@ -70,9 +70,9 @@ def data_load_process(input_file, keyword_file, output_file):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("input_file_path", help="请填入输入文件路径")
-    parser.add_argument("keyword_file_path", help="请填入关键词文件路径")
-    parser.add_argument("output_file_path", help="请填入输出文件路径")
+    parser.add_argument("keyword_file_path", help="请填入敏感词文件路径")
+    parser.add_argument("input_file_path", help="请填入待检测文件路径")
+    parser.add_argument("output_file_path", help="请填入答案文件路径")
     args = parser.parse_args()
     # 执行函数
-    data_load_process(args.input_file_path, args.keyword_file_path, args.output_file_path)
+    data_load_process(args.keyword_file_path, args.input_file_path, args.output_file_path)
